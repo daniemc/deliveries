@@ -4,6 +4,7 @@ import co.com.s4n.semillero.deliveries.domain.app.Drone;
 import co.com.s4n.semillero.deliveries.domain.app.Orientation;
 import co.com.s4n.semillero.deliveries.domain.app.Position;
 import io.vavr.collection.List;
+import io.vavr.control.Try;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -13,8 +14,8 @@ public class DroneService {
 
         final Orientation[] orientation = {drone.orientation};
 
-        AtomicInteger newy = new AtomicInteger(0);
-        AtomicInteger newx = new AtomicInteger(0);
+        AtomicInteger newy = new AtomicInteger(drone.position.y);
+        AtomicInteger newx = new AtomicInteger(drone.position.x);
 
 
         drone.address.head().chars().forEach(c -> {
@@ -38,7 +39,7 @@ public class DroneService {
                 case E:
                     switch (c){
                         case 'A':
-                            newx.getAndDecrement();
+                            newx.getAndIncrement();
                             break;
                         case 'L':
                             orientation[0] = OrientationService.lFromE();
@@ -68,7 +69,7 @@ public class DroneService {
                 case O:
                     switch (c){
                         case 'A':
-                            newx.getAndIncrement();
+                            newx.getAndDecrement();
                             break;
                         case 'L':
                             orientation[0] = OrientationService.lFromO();
@@ -89,36 +90,28 @@ public class DroneService {
         Orientation newOrientation = orientation[0];
         List<String> newAddressList = drone.address.filter(ad -> ad != drone.address.head());
 
+        DroneService.reportPosition(newPosition, newOrientation);
+
         return new Drone(newAddressList, newPosition, newOrientation);
 
     }
 
-    public static void move(Orientation orientation, char mov){
+    public static Drone prepareDroneToDelivery(List<String> delivery){
+        return new Drone(delivery, new Position(0, 0), Orientation.N);
+    }
 
-        switch (orientation){
-            case N:
-                switch (mov){
-                    case 'A':
-                        break;
-                    case 'L':
-                        break;
-                    case 'R':
-                        break;
-                    default:
-                        break;
-                }
-                break;
-            case E:
-                System.out.println("E");
-                break;
-            case S:
-                System.out.println("S");
-                break;
-            case O:
-                System.out.println("O");
-            default:
-                new Exception("Error");
-                break;
+    public static void dispatchDrone(Drone drone){
+        Drone droneDelivery = DroneService.goToAddress(drone);
+        while (droneDelivery.address.size() > 0){
+            droneDelivery = DroneService.goToAddress(droneDelivery);
         }
+    }
+
+    private static void reportPosition(Position position, Orientation orientation){
+        // TODO
+        // report position to txt file
+        String message = "Entrega en: (" + position.x + ", " + position.y + " - " + orientation + ")";
+        //System.out.println(message);
+        Try writeMessage = Try.of(() -> (FileService.writeDeliveryMessage(message)));
     }
 }
