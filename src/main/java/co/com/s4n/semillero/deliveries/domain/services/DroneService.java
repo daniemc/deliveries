@@ -1,6 +1,7 @@
 package co.com.s4n.semillero.deliveries.domain.services;
 
 import co.com.s4n.semillero.deliveries.domain.app.Drone;
+import co.com.s4n.semillero.deliveries.domain.app.Moves;
 import co.com.s4n.semillero.deliveries.domain.app.Orientation;
 import co.com.s4n.semillero.deliveries.domain.app.Position;
 import io.vavr.collection.List;
@@ -13,88 +14,59 @@ public class DroneService {
     public static Drone goToAddress(Drone drone){
 
         final Orientation[] orientation = {drone.orientation};
-
-        AtomicInteger newy = new AtomicInteger(drone.position.y);
-        AtomicInteger newx = new AtomicInteger(drone.position.x);
-
+        final Position[] dronePosition = {drone.position};
 
         drone.address.head().chars().forEach(c -> {
 
-            switch (orientation[0]){
-                case N:
-                    switch (c){
-                        case 'A':
-                            newy.getAndIncrement();
-                            break;
-                        case 'L':
-                            orientation[0] = OrientationService.lFromN();
-                            break;
-                        case 'R':
-                            orientation[0] = OrientationService.rFromN();
-                            break;
-                        default:
-                            break;
-                    }
+            switch (c){
+                case 'A':
+                    dronePosition[0] = move(orientation[0], dronePosition[0]);
                     break;
-                case E:
-                    switch (c){
-                        case 'A':
-                            newx.getAndIncrement();
-                            break;
-                        case 'L':
-                            orientation[0] = OrientationService.lFromE();
-                            break;
-                        case 'R':
-                            orientation[0] = OrientationService.rFromE();
-                            break;
-                        default:
-                            break;
-                    }
+                case 'L':
+                    orientation[0] = OrientationService.lFrom(orientation[0]);
                     break;
-                case S:
-                    switch (c){
-                        case 'A':
-                            newy.getAndDecrement();
-                            break;
-                        case 'L':
-                            orientation[0] = OrientationService.lFromS();
-                            break;
-                        case 'R':
-                            orientation[0] = OrientationService.rFromS();
-                            break;
-                        default:
-                            break;
-                    }
+                case 'R':
+                    orientation[0] = OrientationService.rFrom(orientation[0]);
                     break;
-                case O:
-                    switch (c){
-                        case 'A':
-                            newx.getAndDecrement();
-                            break;
-                        case 'L':
-                            orientation[0] = OrientationService.lFromO();
-                            break;
-                        case 'R':
-                            orientation[0] = OrientationService.rFromO();
-                            break;
-                        default:
-                            break;
-                    }
                 default:
-                    new Exception("Error");
+                    new Exception("Move not found");
                     break;
             }
+
         });
 
-        Position newPosition = new Position(newx.intValue(), newy.intValue());
-        Orientation newOrientation = orientation[0];
+
         List<String> newAddressList = drone.address.filter(ad -> ad != drone.address.head());
 
-        DroneService.reportPosition(newPosition, newOrientation);
+        DroneService.reportPosition(dronePosition[0], orientation[0]);
 
-        return new Drone(newAddressList, newPosition, newOrientation);
+        return new Drone(newAddressList, dronePosition[0], orientation[0]);
 
     }
+
+    public static Position move(Orientation orientation, Position oldPosition){
+
+        Position position = oldPosition;
+        switch (orientation) {
+            case N:
+                position = new Position(position.x, position.y + 1);
+                break;
+            case S:
+                position = new Position(position.x, position.y - 1);
+                break;
+            case O:
+                position = new Position(position.x + 1, position.y);
+                break;
+            case E:
+                position = new Position(position.x - 1, position.y);
+                break;
+            default:
+                break;
+        }
+
+        return position;
+    }
+
 
     public static Drone prepareDroneToDelivery(List<String> delivery){
         return new Drone(delivery, new Position(0, 0), Orientation.N);
