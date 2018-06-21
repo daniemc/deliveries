@@ -37,7 +37,7 @@ public class DroneService {
 
         DroneService.reportPosition(dronePosition[0], orientation[0]);
 
-        return new Drone(newAddressList, dronePosition[0], orientation[0], drone.cityMap);
+        return new Drone(newAddressList, dronePosition[0], orientation[0], drone.cityMap, "01");
 
     }
 
@@ -65,8 +65,9 @@ public class DroneService {
     }
 
 
-    public static Drone prepareDroneToDelivery(List<String> delivery, City city){
-        return new Drone(delivery, new Position(0, 0), Orientation.N, city);
+    public static Drone prepareDroneToDelivery(List<String> delivery, City city, List<Integer> drones){
+
+        return new Drone(delivery, new Position(0, 0), Orientation.N, city, "");
     }
 
     public static void dispatchDrone(Drone drone){

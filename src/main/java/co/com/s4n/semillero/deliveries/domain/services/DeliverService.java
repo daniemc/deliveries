@@ -12,9 +12,9 @@ import java.util.stream.Stream;
 
 public class DeliverService {
 
-    private static List<String> deliveriesList(){
+    private static List<String> deliveriesList(String fileName){
         Try<List<String>> deliveriesList =
-                Try.of(() -> (FileService.readDeliveriesFile()))
+                Try.of(() -> (FileService.readDeliveriesFile(fileName)))
                 .recoverWith(Exception.class, Try.of(() -> {
                     List<String> defaultStream = List.empty();
                     return defaultStream;
@@ -30,8 +30,8 @@ public class DeliverService {
 
     }
 
-    public static Iterator<List<String>> createDeliveries(){
-        List<String> initialDeliveriesList = DeliverService.deliveriesList();
+    public static Iterator<List<String>> createDeliveries(String fileName){
+        List<String> initialDeliveriesList = DeliverService.deliveriesList(fileName);
         return  DeliverService.partitionDeliveries(initialDeliveriesList, 3);
     }
 
