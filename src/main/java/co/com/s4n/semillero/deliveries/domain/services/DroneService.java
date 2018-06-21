@@ -16,9 +16,9 @@ public class DroneService {
         final Orientation[] orientation = {drone.orientation};
         final Position[] dronePosition = {drone.position};
 
-        drone.address.head().chars().forEach(c -> {
+        drone.address.head().chars().forEach(move -> {
 
-            switch (c){
+            switch (move){
                 case 'A':
                     dronePosition[0] = move(orientation[0], dronePosition[0]);
                     break;
