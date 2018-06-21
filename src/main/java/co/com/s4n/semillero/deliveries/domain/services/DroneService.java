@@ -108,10 +108,9 @@ public class DroneService {
     }
 
     private static void reportPosition(Position position, Orientation orientation){
-        // TODO
-        // report position to txt file
+
         String message = "Entrega en: (" + position.x + ", " + position.y + " - " + orientation + ")";
-        //System.out.println(message);
         Try writeMessage = Try.of(() -> (FileService.writeDeliveryMessage(message)));
+        writeMessage.get();
     }
 }
