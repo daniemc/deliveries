@@ -2,25 +2,20 @@ package co.com.s4n.semillero.deliveries.domain.services;
 
 import io.vavr.collection.List;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.Writer;
+import java.io.*;
 import java.net.URI;
-import java.nio.charset.StandardCharsets;
 import java.nio.file.*;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class FileService {
 
-    public static List<String> readDeliveriesFile() throws Exception{
-        String fileName = "in.txt";
+    public static List<String> readDeliveriesFile(String fileName) throws Exception{
+
         URI uri = ClassLoader.getSystemResource(fileName).toURI();
         String mainPath = Paths.get(uri).toString();
         Path path = Paths.get(mainPath);
-        List<String> stream = List.ofAll(Files.lines(path));
-        return stream;
+        return List.ofAll(Files.lines(path));
+
     }
 
     public static Boolean writeDeliveryMessage(String message) throws Exception{
@@ -32,6 +27,18 @@ public class FileService {
         writer.close();
 
         return true;
+    }
+
+    public static Stream<String> listDeliveriesFiles() throws Exception {
+
+        String folderPath = new File("src/main/resources").getAbsolutePath();
+
+        Stream<String> paths = Files.walk(Paths.get(folderPath))
+                .filter(Files::isRegularFile)
+                .filter(file -> file.getFileName().toString().startsWith("in"))
+                .map(path -> path.getFileName().toString());
+        return paths;
+
     }
 
 
