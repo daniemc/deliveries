@@ -20,7 +20,7 @@ public class DroneServiceTest {
     public void makeDeliveryTest(){
         List<String> address = List.of("AAAALAAR");
         City city = new City(5, 5, 5, 5);
-        Drone drone = new Drone(address, new Position(0, 0), Orientation.N, city);
+        Drone drone = new Drone(address, new Position(0, 0), Orientation.N, city, "01");
         Drone newdrone = DroneService.goToAddress(drone);
         assertTrue(newdrone.address.isEmpty());
         assertEquals(-2, newdrone.position.x);
