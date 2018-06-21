@@ -1,5 +1,6 @@
 package co.com.s4n.semillero.delivers;
 
+import co.com.s4n.semillero.deliveries.domain.app.City;
 import co.com.s4n.semillero.deliveries.domain.app.Drone;
 import co.com.s4n.semillero.deliveries.domain.app.Orientation;
 import co.com.s4n.semillero.deliveries.domain.app.Position;
@@ -18,7 +19,8 @@ public class DroneServiceTest {
     @Test
     public void makeDeliveryTest(){
         List<String> address = List.of("AAAALAAR");
-        Drone drone = new Drone(address, new Position(0, 0), Orientation.N);
+        City city = new City(5, 5, 5, 5);
+        Drone drone = new Drone(address, new Position(0, 0), Orientation.N, city);
         Drone newdrone = DroneService.goToAddress(drone);
         assertTrue(newdrone.address.isEmpty());
         assertEquals(-2, newdrone.position.x);

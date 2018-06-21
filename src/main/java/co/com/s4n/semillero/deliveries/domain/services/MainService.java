@@ -16,7 +16,7 @@ public class MainService {
         AtomicInteger deliveryCount = new AtomicInteger(1);
         City city = new City(10, 10, -10, -10);
         deliveriesList.forEach(delivery -> {
-            Drone drone = DroneService.prepareDroneToDelivery(delivery);
+            Drone drone = DroneService.prepareDroneToDelivery(delivery, city);
             Try.of(() -> FileService.writeDeliveryMessage("Starts delivery: " + deliveryCount.getAndIncrement() + " ---"));
             DroneService.dispatchDrone(drone);
         });

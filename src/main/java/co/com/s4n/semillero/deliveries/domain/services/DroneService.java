@@ -1,9 +1,6 @@
 package co.com.s4n.semillero.deliveries.domain.services;
 
-import co.com.s4n.semillero.deliveries.domain.app.Drone;
-import co.com.s4n.semillero.deliveries.domain.app.Moves;
-import co.com.s4n.semillero.deliveries.domain.app.Orientation;
-import co.com.s4n.semillero.deliveries.domain.app.Position;
+import co.com.s4n.semillero.deliveries.domain.app.*;
 import io.vavr.collection.List;
 import io.vavr.control.Try;
 
@@ -40,7 +37,7 @@ public class DroneService {
 
         DroneService.reportPosition(dronePosition[0], orientation[0]);
 
-        return new Drone(newAddressList, dronePosition[0], orientation[0]);
+        return new Drone(newAddressList, dronePosition[0], orientation[0], drone.cityMap);
 
     }
 
@@ -68,8 +65,8 @@ public class DroneService {
     }
 
 
-    public static Drone prepareDroneToDelivery(List<String> delivery){
-        return new Drone(delivery, new Position(0, 0), Orientation.N);
+    public static Drone prepareDroneToDelivery(List<String> delivery, City city){
+        return new Drone(delivery, new Position(0, 0), Orientation.N, city);
     }
 
     public static void dispatchDrone(Drone drone){
