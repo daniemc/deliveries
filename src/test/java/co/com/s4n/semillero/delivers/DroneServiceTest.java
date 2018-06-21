@@ -9,6 +9,7 @@ import io.vavr.collection.List;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
+import java.net.URISyntaxException;
 import java.util.stream.Stream;
 
 
@@ -16,18 +17,17 @@ public class DroneServiceTest {
 
     @Test
     public void makeDeliveryTest(){
-        List<String> address = List.of("AAAARAAL", "ALA", "ARA");
+        List<String> address = List.of("AAAALAAR");
         Drone drone = new Drone(address, new Position(0, 0), Orientation.N);
         Drone newdrone = DroneService.goToAddress(drone);
-        System.out.println("address list" + newdrone.address);
-        System.out.println("position x " + newdrone.position.x);
-        System.out.println("position y " + newdrone.position.y);
-        System.out.println("orientation " + newdrone.orientation);
+        assertTrue(newdrone.address.isEmpty());
+        assertEquals(-2, newdrone.position.x);
+        assertEquals(4, newdrone.position.y);
+        assertEquals(Orientation.N, newdrone.orientation);
     }
 
     @Test
     public void readFileTest(){
 
-        DeliverService.createDeliveries();
     }
 }
