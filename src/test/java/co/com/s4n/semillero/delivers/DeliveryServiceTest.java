@@ -16,13 +16,13 @@ public class DeliveryServiceTest {
 
     @Test
     public void readFileTest(){
-        Try<List<String>> deliveriesList = Try.of(() -> FileService.readDeliveriesFile());
+        Try<List<String>> deliveriesList = Try.of(() -> FileService.readDeliveriesFile("in.txt"));
         assertTrue(deliveriesList.isSuccess());
     }
 
     @Test
     public void getDeliveriesListTest(){
-        Iterator<List<String>> deliveriesList = DeliverService.createDeliveries();
+        Iterator<List<String>> deliveriesList = DeliverService.createDeliveries("in.txxt");
         deliveriesList.forEach(list -> {
             System.out.println(list);
         });

@@ -1,5 +1,6 @@
 package co.com.s4n.semillero.delivers;
 import co.com.s4n.semillero.deliveries.domain.services.FileService;
+import io.vavr.collection.List;
 import io.vavr.control.Try;
 import org.junit.Test;
 
@@ -18,5 +19,6 @@ public class FileServiceTest {
     public void listFolderTest(){
         Try read = Try.of(() -> FileService.listDeliveriesFiles());
         assertTrue(read.isSuccess());
+        assertTrue();
     }
 }

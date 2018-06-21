@@ -1,6 +1,7 @@
 package co.com.s4n.semillero.deliveries.domain.services;
 
 import io.vavr.collection.List;
+import io.vavr.control.Try;
 
 import java.io.*;
 import java.net.URI;
@@ -29,7 +30,7 @@ public class FileService {
         return true;
     }
 
-    public static Stream<String> listDeliveriesFiles() throws Exception {
+    public static Try<Stream<String>> listDeliveriesFiles() throws Exception {
 
         String folderPath = new File("src/main/resources").getAbsolutePath();
 
@@ -37,7 +38,8 @@ public class FileService {
                 .filter(Files::isRegularFile)
                 .filter(file -> file.getFileName().toString().startsWith("in"))
                 .map(path -> path.getFileName().toString());
-        return paths;
+
+        return Try.of(() -> paths).recoverWith(Exception.class, Try.of(() -> Stream.empty()));
 
     }
 
