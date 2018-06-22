@@ -6,6 +6,8 @@ import io.vavr.control.Try;
 import java.io.*;
 import java.net.URI;
 import java.nio.file.*;
+import java.util.ArrayList;
+import java.util.function.Consumer;
 import java.util.stream.Stream;
 
 public class FileService {
@@ -19,18 +21,21 @@ public class FileService {
 
     }
 
-    public static Boolean writeDeliveryMessage(String message) throws Exception{
-        String fileName = "out.txt";
-        String path = new File("src/main/resources/"+fileName).getAbsolutePath();
-        BufferedWriter writer = new BufferedWriter(new FileWriter(path, true));
-        writer.write(message);
-        writer.newLine();
-        writer.close();
+    public static Boolean writeDeliveryMessage(String fileName, String message) throws Exception{
 
+        if (fileName != "") {
+            String path = new File("src/main/resources/"+fileName).getAbsolutePath();
+            BufferedWriter writer = new BufferedWriter(new FileWriter(path, true));
+            writer.write(message);
+            writer.newLine();
+            writer.close();
+        } else {
+            return false;
+        }
         return true;
     }
 
-    public static Try<Stream<String>> listDeliveriesFiles() throws Exception {
+    public static Try<List<String>> listDeliveriesFiles() throws Exception {
 
         String folderPath = new File("src/main/resources").getAbsolutePath();
 
@@ -39,7 +44,14 @@ public class FileService {
                 .filter(file -> file.getFileName().toString().startsWith("in"))
                 .map(path -> path.getFileName().toString());
 
-        return Try.of(() -> paths).recoverWith(Exception.class, Try.of(() -> Stream.empty()));
+        ArrayList<String> fileList = new ArrayList<>();
+        Consumer<String> setFile = file -> {
+            fileList.add(file);
+        };
+        paths.forEach(setFile);
+        List<String> returnList = List.ofAll(fileList);
+
+        return Try.of(() -> returnList).recoverWith(Exception.class, Try.of(() -> List.empty()));
 
     }
 
