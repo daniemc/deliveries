@@ -12,27 +12,26 @@ import java.util.stream.Stream;
 
 public class DeliverService {
 
-    private static List<String> deliveriesList(){
+    private static List<String> deliveriesList(String fileName){
         Try<List<String>> deliveriesList =
-                Try.of(() -> (FileService.readDeliveriesFile()))
+                Try.of(() -> (FileService.readDeliveriesFile(fileName)))
                 .recoverWith(Exception.class, Try.of(() -> {
                     List<String> defaultStream = List.empty();
                     return defaultStream;
                 }))
                 .map(list -> list);
-
         return deliveriesList.get();
     }
 
-    private static Iterator<List<String>> partitionDeliveries(List<String> list, int size) {
+    private static Iterator<List<String>> partitionDeliveries(List<String> list, Integer size) {
 
         return list.grouped(size);
 
     }
 
-    public static Iterator<List<String>> createDeliveries(){
-        List<String> initialDeliveriesList = DeliverService.deliveriesList();
-        return  DeliverService.partitionDeliveries(initialDeliveriesList, 3);
+    public static Iterator<List<String>> createDeliveries(String fileName, Integer size){
+        List<String> initialDeliveriesList = DeliverService.deliveriesList(fileName);
+        return  DeliverService.partitionDeliveries(initialDeliveriesList, size);
     }
 
 }
