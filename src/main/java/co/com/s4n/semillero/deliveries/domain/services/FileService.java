@@ -35,7 +35,7 @@ public class FileService {
         return true;
     }
 
-    public static Try<List<String>> listDeliveriesFiles() throws Exception {
+    public static List<String> listDeliveriesFiles() throws Exception {
 
         String folderPath = new File("src/main/resources").getAbsolutePath();
 
@@ -51,7 +51,7 @@ public class FileService {
         paths.forEach(setFile);
         List<String> returnList = List.ofAll(fileList);
 
-        return Try.of(() -> returnList).recoverWith(Exception.class, Try.of(() -> List.empty()));
+        return returnList;
 
     }
 

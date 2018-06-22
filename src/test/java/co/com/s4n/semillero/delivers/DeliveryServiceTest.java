@@ -22,7 +22,7 @@ public class DeliveryServiceTest {
 
     @Test
     public void getDeliveriesListTest(){
-        Iterator<List<String>> deliveriesList = DeliverService.createDeliveries("in.txxt");
+        Iterator<List<String>> deliveriesList = DeliverService.createDeliveries("in.txxt", 3);
         deliveriesList.forEach(list -> {
             System.out.println(list);
         });
@@ -30,6 +30,6 @@ public class DeliveryServiceTest {
 
     @Test
     public void main(){
-        MainService.deliveries();
+        MainService.deliveriesList();
     }
 }

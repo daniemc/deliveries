@@ -20,19 +20,18 @@ public class DeliverService {
                     return defaultStream;
                 }))
                 .map(list -> list);
-
         return deliveriesList.get();
     }
 
-    private static Iterator<List<String>> partitionDeliveries(List<String> list, int size) {
+    private static Iterator<List<String>> partitionDeliveries(List<String> list, Integer size) {
 
         return list.grouped(size);
 
     }
 
-    public static Iterator<List<String>> createDeliveries(String fileName){
+    public static Iterator<List<String>> createDeliveries(String fileName, Integer size){
         List<String> initialDeliveriesList = DeliverService.deliveriesList(fileName);
-        return  DeliverService.partitionDeliveries(initialDeliveriesList, 3);
+        return  DeliverService.partitionDeliveries(initialDeliveriesList, size);
     }
 
 }

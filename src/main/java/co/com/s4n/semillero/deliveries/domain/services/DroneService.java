@@ -9,7 +9,6 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class DroneService {
 
     public static Drone goToAddress(Drone drone){
-
         final Orientation[] orientation = {drone.orientation};
         final Position[] dronePosition = {drone.position};
 
@@ -35,9 +34,9 @@ public class DroneService {
 
         List<String> newAddressList = drone.address.filter(ad -> ad != drone.address.head());
 
-        DroneService.reportPosition(dronePosition[0], orientation[0]);
+        DroneService.reportPosition(dronePosition[0], orientation[0], drone.outputFile);
 
-        return new Drone(newAddressList, dronePosition[0], orientation[0], drone.cityMap, "01");
+        return new Drone(newAddressList, dronePosition[0], orientation[0], drone.cityMap, drone.name);
 
     }
 
@@ -65,9 +64,8 @@ public class DroneService {
     }
 
 
-    public static Drone prepareDroneToDelivery(List<String> delivery, City city, List<Integer> drones){
-
-        return new Drone(delivery, new Position(0, 0), Orientation.N, city, "");
+    public static Drone prepareDroneToDelivery(List<String> delivery, City city, String name){
+        return new Drone(delivery, new Position(0, 0), Orientation.N, city, name);
     }
 
     public static void dispatchDrone(Drone drone){
@@ -77,10 +75,10 @@ public class DroneService {
         }
     }
 
-    private static void reportPosition(Position position, Orientation orientation){
+    private static void reportPosition(Position position, Orientation orientation, String droneOutput){
 
         String message = "Entrega en: (" + position.x + ", " + position.y + " - " + orientation + ")";
-        Try writeMessage = Try.of(() -> (FileService.writeDeliveryMessage(message)));
+        Try writeMessage = Try.of(() -> (FileService.writeDeliveryMessage(droneOutput, message)));
         writeMessage.get();
     }
 }
