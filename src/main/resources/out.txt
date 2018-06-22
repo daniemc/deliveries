@@ -1,0 +1,8 @@
+Starts delivery: 0
+Entrega en: (-2, 4 - N)
+Entrega en: (-1, 3 - S)
+Entrega en: (0, 0 - E)
+Starts delivery: 1
+Entrega en: (-2, 4 - N)
+Entrega en: (-1, 3 - S)
+Entrega en: (0, 0 - E)
