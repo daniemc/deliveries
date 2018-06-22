@@ -23,9 +23,7 @@ public class DeliveryServiceTest {
     @Test
     public void getDeliveriesListTest(){
         Iterator<List<String>> deliveriesList = DeliverService.createDeliveries("in.txxt", 3);
-        deliveriesList.forEach(list -> {
-            System.out.println(list);
-        });
+        assertTrue(deliveriesList.length() > 0);
     }
 
     @Test

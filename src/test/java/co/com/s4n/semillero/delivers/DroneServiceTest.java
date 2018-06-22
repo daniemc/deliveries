@@ -29,7 +29,42 @@ public class DroneServiceTest {
     }
 
     @Test
-    public void readFileTest(){
+    public void moveTest(){
+        Position position1 = DroneService.move(Orientation.N, new Position(0,0));
+        Position position2 = DroneService.move(Orientation.E, new Position(0,0));
+        Position position3 = DroneService.move(Orientation.S, new Position(0,0));
+        Position position4 = DroneService.move(Orientation.O, new Position(0,0));
 
+        assertEquals(new Position(0, 1).x, position1.x);
+        assertEquals(new Position(0, 1).y, position1.y);
+
+        assertEquals(new Position(-1, 0).x, position2.x);
+        assertEquals(new Position(-1, 0).y, position2.y);
+
+        assertEquals(new Position(0, -1).x, position3.x);
+        assertEquals(new Position(0, -1).y, position3.y);
+
+        assertEquals(new Position(1, 0).x, position4.x);
+        assertEquals(new Position(1, 0).y, position4.y);
+    }
+
+    @Test
+    public void moveTestFail(){
+        Position position1 = DroneService.move(Orientation.N, new Position(0,0));
+        Position position2 = DroneService.move(Orientation.E, new Position(0,0));
+        Position position3 = DroneService.move(Orientation.S, new Position(0,0));
+        Position position4 = DroneService.move(Orientation.O, new Position(0,0));
+
+        assertNotSame(new Position(1, -1).x, position1.x);
+        assertNotSame(new Position(1, -1).y, position1.y);
+
+        assertNotSame(new Position(1, 1).x, position2.x);
+        assertNotSame(new Position(1, 1).y, position2.y);
+
+        assertNotSame(new Position(1, 1).x, position3.x);
+        assertNotSame(new Position(1, 1).y, position3.y);
+
+        assertNotSame(new Position(-1, 1).x, position4.x);
+        assertNotSame(new Position(-1, 1).y, position4.y);
     }
 }
