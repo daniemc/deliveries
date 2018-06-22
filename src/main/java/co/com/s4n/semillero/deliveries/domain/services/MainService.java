@@ -26,7 +26,7 @@ public class MainService {
 
         ExecutorService service = Executors.newFixedThreadPool(20);
         deliveriesFiles.take(20).flatMap(file -> Future.of(service, () -> {
-            Iterator<List<String>> deliveriesList = DeliverService.createDeliveries(file, 3);
+            Iterator<List<String>> deliveriesList = DeliverService.createDeliveries(file, 10);
             String[] nameParts = file.split(Pattern.quote("."));
 
             if(nameParts.length == 2 && nameParts[0].length() == 4){
