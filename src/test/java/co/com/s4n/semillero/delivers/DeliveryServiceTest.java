@@ -22,7 +22,7 @@ public class DeliveryServiceTest {
 
     @Test
     public void getDeliveriesListTest(){
-        Iterator<List<String>> deliveriesList = DeliverService.createDeliveries("in.txxt", 3);
+        Iterator<List<String>> deliveriesList = DeliverService.createDeliveries("in.txt", 3);
         assertTrue(deliveriesList.length() > 0);
     }
 
