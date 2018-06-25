@@ -78,7 +78,6 @@ public class DroneService {
     private static void reportPosition(Position position, Orientation orientation, String droneOutput){
 
         String message = "Entrega en: (" + position.x + ", " + position.y + " - " + orientation + ")";
-        Try writeMessage = Try.of(() -> (FileService.writeDeliveryMessage(droneOutput, message)));
-        writeMessage.get();
+        Try.of(() -> (FileService.writeDeliveryMessage(droneOutput, message)));
     }
 }
