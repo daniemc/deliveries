@@ -7,6 +7,6 @@ public class MainServiceTest {
 
     @Test
     public void getListTest(){
-        MainService.deliveriesList();
+        MainService.startDeliveries();
     }
 }

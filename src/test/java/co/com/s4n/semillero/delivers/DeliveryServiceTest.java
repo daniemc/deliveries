@@ -21,6 +21,12 @@ public class DeliveryServiceTest {
     }
 
     @Test
+    public void readFileFailTest(){
+        Try<List<String>> deliveriesList = Try.of(() -> FileService.readDeliveriesFile("in.txxt"));
+        assertTrue(deliveriesList.isFailure());
+    }
+
+    @Test
     public void getDeliveriesListTest(){
         Iterator<List<String>> deliveriesList = DeliverService.createDeliveries("in.txt", 3);
         assertTrue(deliveriesList.length() > 0);
@@ -28,6 +34,6 @@ public class DeliveryServiceTest {
 
     @Test
     public void main(){
-        MainService.deliveriesList();
+        MainService.startDeliveries();
     }
 }

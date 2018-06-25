@@ -46,7 +46,7 @@ public class MainService {
 
     }
 
-    public static void deliveriesList(){
+    public static void startDeliveries(){
         Try.of(() -> FileService.listDeliveriesFiles())
                 .onSuccess(fileList -> MainService.deliveries(fileList));
     }
